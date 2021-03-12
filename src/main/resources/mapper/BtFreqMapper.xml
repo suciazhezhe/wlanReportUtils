@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.BtFreqMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.BtFreq">
+    <id column="bt_freq_id" jdbcType="VARCHAR" property="btFreqId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="bt_freq_classic_lowenergy" jdbcType="BIT" property="btFreqClassicLowenergy" />
+    <result column="bt_freq_rate" jdbcType="DOUBLE" property="btFreqRate" />
+    <result column="bt_freq_count" jdbcType="INTEGER" property="btFreqCount" />
+    <result column="bt_freq_freq" jdbcType="DOUBLE" property="btFreqFreq" />
+    <result column="bt_freq_result" jdbcType="DOUBLE" property="btFreqResult" />
+    <result column="bt_freq_judgement" jdbcType="BIT" property="btFreqJudgement" />
+    <result column="bt_freq_time" jdbcType="TIMESTAMP" property="btFreqTime" />
+    <result column="bt_freq_delete" jdbcType="BIT" property="btFreqDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bt_freq
+    where bt_freq_id = #{btFreqId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.BtFreq">
+    insert into bt_freq (bt_freq_id, info_id, bt_freq_classic_lowenergy, 
+      bt_freq_rate, bt_freq_count, bt_freq_freq, 
+      bt_freq_result, bt_freq_judgement, bt_freq_time, 
+      bt_freq_delete)
+    values (#{btFreqId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{btFreqClassicLowenergy,jdbcType=BIT}, 
+      #{btFreqRate,jdbcType=DOUBLE}, #{btFreqCount,jdbcType=INTEGER}, #{btFreqFreq,jdbcType=DOUBLE}, 
+      #{btFreqResult,jdbcType=DOUBLE}, #{btFreqJudgement,jdbcType=BIT}, #{btFreqTime,jdbcType=TIMESTAMP}, 
+      #{btFreqDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.BtFreq">
+    update bt_freq
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      bt_freq_classic_lowenergy = #{btFreqClassicLowenergy,jdbcType=BIT},
+      bt_freq_rate = #{btFreqRate,jdbcType=DOUBLE},
+      bt_freq_count = #{btFreqCount,jdbcType=INTEGER},
+      bt_freq_freq = #{btFreqFreq,jdbcType=DOUBLE},
+      bt_freq_result = #{btFreqResult,jdbcType=DOUBLE},
+      bt_freq_judgement = #{btFreqJudgement,jdbcType=BIT},
+      bt_freq_time = #{btFreqTime,jdbcType=TIMESTAMP},
+      bt_freq_delete = #{btFreqDelete,jdbcType=BIT}
+    where bt_freq_id = #{btFreqId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select bt_freq_id, info_id, bt_freq_classic_lowenergy, bt_freq_rate, bt_freq_count, 
+    bt_freq_freq, bt_freq_result, bt_freq_judgement, bt_freq_time, bt_freq_delete
+    from bt_freq
+    where bt_freq_id = #{btFreqId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bt_freq_id, info_id, bt_freq_classic_lowenergy, bt_freq_rate, bt_freq_count, 
+    bt_freq_freq, bt_freq_result, bt_freq_judgement, bt_freq_time, bt_freq_delete
+    from bt_freq
+  </select>
+</mapper>

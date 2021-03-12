@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.BtObwMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.BtObw">
+    <id column="bt_obw_id" jdbcType="VARCHAR" property="btObwId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="bt_obw_classic_lowenergy" jdbcType="BIT" property="btObwClassicLowenergy" />
+    <result column="bt_obw_rate" jdbcType="DOUBLE" property="btObwRate" />
+    <result column="bt_obw_count" jdbcType="INTEGER" property="btObwCount" />
+    <result column="bt_obw_freq" jdbcType="DOUBLE" property="btObwFreq" />
+    <result column="bt_obw_result" jdbcType="DOUBLE" property="btObwResult" />
+    <result column="bt_obw_judgement" jdbcType="BIT" property="btObwJudgement" />
+    <result column="bt_obw_time" jdbcType="TIMESTAMP" property="btObwTime" />
+    <result column="bt_obw_delete" jdbcType="BIT" property="btObwDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bt_obw
+    where bt_obw_id = #{btObwId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.BtObw">
+    insert into bt_obw (bt_obw_id, info_id, bt_obw_classic_lowenergy, 
+      bt_obw_rate, bt_obw_count, bt_obw_freq, 
+      bt_obw_result, bt_obw_judgement, bt_obw_time, 
+      bt_obw_delete)
+    values (#{btObwId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{btObwClassicLowenergy,jdbcType=BIT}, 
+      #{btObwRate,jdbcType=DOUBLE}, #{btObwCount,jdbcType=INTEGER}, #{btObwFreq,jdbcType=DOUBLE}, 
+      #{btObwResult,jdbcType=DOUBLE}, #{btObwJudgement,jdbcType=BIT}, #{btObwTime,jdbcType=TIMESTAMP}, 
+      #{btObwDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.BtObw">
+    update bt_obw
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      bt_obw_classic_lowenergy = #{btObwClassicLowenergy,jdbcType=BIT},
+      bt_obw_rate = #{btObwRate,jdbcType=DOUBLE},
+      bt_obw_count = #{btObwCount,jdbcType=INTEGER},
+      bt_obw_freq = #{btObwFreq,jdbcType=DOUBLE},
+      bt_obw_result = #{btObwResult,jdbcType=DOUBLE},
+      bt_obw_judgement = #{btObwJudgement,jdbcType=BIT},
+      bt_obw_time = #{btObwTime,jdbcType=TIMESTAMP},
+      bt_obw_delete = #{btObwDelete,jdbcType=BIT}
+    where bt_obw_id = #{btObwId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select bt_obw_id, info_id, bt_obw_classic_lowenergy, bt_obw_rate, bt_obw_count, bt_obw_freq, 
+    bt_obw_result, bt_obw_judgement, bt_obw_time, bt_obw_delete
+    from bt_obw
+    where bt_obw_id = #{btObwId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bt_obw_id, info_id, bt_obw_classic_lowenergy, bt_obw_rate, bt_obw_count, bt_obw_freq, 
+    bt_obw_result, bt_obw_judgement, bt_obw_time, bt_obw_delete
+    from bt_obw
+  </select>
+</mapper>

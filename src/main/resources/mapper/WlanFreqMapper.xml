@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.WlanFreqMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.WlanFreq">
+    <id column="wlan_freq_id" jdbcType="VARCHAR" property="wlanFreqId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="wlan_freq_count" jdbcType="INTEGER" property="wlanFreqCount" />
+    <result column="wlan_freq_ant" jdbcType="VARCHAR" property="wlanFreqAnt" />
+    <result column="wlan_freq_model" jdbcType="VARCHAR" property="wlanFreqModel" />
+    <result column="wlan_freq_rate" jdbcType="VARCHAR" property="wlanFreqRate" />
+    <result column="wlan_freq_freq" jdbcType="VARCHAR" property="wlanFreqFreq" />
+    <result column="wlan_freq_result" jdbcType="DOUBLE" property="wlanFreqResult" />
+    <result column="wlan_freq_judgement" jdbcType="BIT" property="wlanFreqJudgement" />
+    <result column="wlan_freq_time" jdbcType="TIMESTAMP" property="wlanFreqTime" />
+    <result column="wlan_freq_delete" jdbcType="BIT" property="wlanFreqDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from wlan_freq
+    where wlan_freq_id = #{wlanFreqId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.WlanFreq">
+    insert into wlan_freq (wlan_freq_id, info_id, wlan_freq_count, 
+      wlan_freq_ant, wlan_freq_model, wlan_freq_rate, 
+      wlan_freq_freq, wlan_freq_result, wlan_freq_judgement, 
+      wlan_freq_time, wlan_freq_delete)
+    values (#{wlanFreqId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{wlanFreqCount,jdbcType=INTEGER}, 
+      #{wlanFreqAnt,jdbcType=VARCHAR}, #{wlanFreqModel,jdbcType=VARCHAR}, #{wlanFreqRate,jdbcType=VARCHAR}, 
+      #{wlanFreqFreq,jdbcType=VARCHAR}, #{wlanFreqResult,jdbcType=DOUBLE}, #{wlanFreqJudgement,jdbcType=BIT}, 
+      #{wlanFreqTime,jdbcType=TIMESTAMP}, #{wlanFreqDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.WlanFreq">
+    update wlan_freq
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      wlan_freq_count = #{wlanFreqCount,jdbcType=INTEGER},
+      wlan_freq_ant = #{wlanFreqAnt,jdbcType=VARCHAR},
+      wlan_freq_model = #{wlanFreqModel,jdbcType=VARCHAR},
+      wlan_freq_rate = #{wlanFreqRate,jdbcType=VARCHAR},
+      wlan_freq_freq = #{wlanFreqFreq,jdbcType=VARCHAR},
+      wlan_freq_result = #{wlanFreqResult,jdbcType=DOUBLE},
+      wlan_freq_judgement = #{wlanFreqJudgement,jdbcType=BIT},
+      wlan_freq_time = #{wlanFreqTime,jdbcType=TIMESTAMP},
+      wlan_freq_delete = #{wlanFreqDelete,jdbcType=BIT}
+    where wlan_freq_id = #{wlanFreqId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select wlan_freq_id, info_id, wlan_freq_count, wlan_freq_ant, wlan_freq_model, wlan_freq_rate, 
+    wlan_freq_freq, wlan_freq_result, wlan_freq_judgement, wlan_freq_time, wlan_freq_delete
+    from wlan_freq
+    where wlan_freq_id = #{wlanFreqId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select wlan_freq_id, info_id, wlan_freq_count, wlan_freq_ant, wlan_freq_model, wlan_freq_rate, 
+    wlan_freq_freq, wlan_freq_result, wlan_freq_judgement, wlan_freq_time, wlan_freq_delete
+    from wlan_freq
+  </select>
+  <select id="selectByInfoId" resultMap="BaseResultMap">
+    select wlan_freq_id, info_id, wlan_freq_count, wlan_freq_ant, wlan_freq_model, wlan_freq_rate, 
+    wlan_freq_freq, wlan_freq_result, wlan_freq_judgement, wlan_freq_time, wlan_freq_delete
+    from wlan_freq
+    where info_id = #{infoId,jdbcType=VARCHAR} and wlan_freq_delete = 0
+  </select>
+</mapper>

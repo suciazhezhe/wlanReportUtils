@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.BtOobMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.BtOob">
+    <id column="bt_oob_id" jdbcType="VARCHAR" property="btOobId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="bt_oob_classic_lowenergy" jdbcType="BIT" property="btOobClassicLowenergy" />
+    <result column="bt_oob_rate" jdbcType="DOUBLE" property="btOobRate" />
+    <result column="bt_oob_count" jdbcType="INTEGER" property="btOobCount" />
+    <result column="bt_oob_freq" jdbcType="DOUBLE" property="btOobFreq" />
+    <result column="bt_oob_result" jdbcType="DOUBLE" property="btOobResult" />
+    <result column="bt_oob_judgement" jdbcType="BIT" property="btOobJudgement" />
+    <result column="bt_oob_time" jdbcType="TIMESTAMP" property="btOobTime" />
+    <result column="bt_oob_delete" jdbcType="BIT" property="btOobDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bt_oob
+    where bt_oob_id = #{btOobId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.BtOob">
+    insert into bt_oob (bt_oob_id, info_id, bt_oob_classic_lowenergy, 
+      bt_oob_rate, bt_oob_count, bt_oob_freq, 
+      bt_oob_result, bt_oob_judgement, bt_oob_time, 
+      bt_oob_delete)
+    values (#{btOobId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{btOobClassicLowenergy,jdbcType=BIT}, 
+      #{btOobRate,jdbcType=DOUBLE}, #{btOobCount,jdbcType=INTEGER}, #{btOobFreq,jdbcType=DOUBLE}, 
+      #{btOobResult,jdbcType=DOUBLE}, #{btOobJudgement,jdbcType=BIT}, #{btOobTime,jdbcType=TIMESTAMP}, 
+      #{btOobDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.BtOob">
+    update bt_oob
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      bt_oob_classic_lowenergy = #{btOobClassicLowenergy,jdbcType=BIT},
+      bt_oob_rate = #{btOobRate,jdbcType=DOUBLE},
+      bt_oob_count = #{btOobCount,jdbcType=INTEGER},
+      bt_oob_freq = #{btOobFreq,jdbcType=DOUBLE},
+      bt_oob_result = #{btOobResult,jdbcType=DOUBLE},
+      bt_oob_judgement = #{btOobJudgement,jdbcType=BIT},
+      bt_oob_time = #{btOobTime,jdbcType=TIMESTAMP},
+      bt_oob_delete = #{btOobDelete,jdbcType=BIT}
+    where bt_oob_id = #{btOobId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select bt_oob_id, info_id, bt_oob_classic_lowenergy, bt_oob_rate, bt_oob_count, bt_oob_freq, 
+    bt_oob_result, bt_oob_judgement, bt_oob_time, bt_oob_delete
+    from bt_oob
+    where bt_oob_id = #{btOobId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bt_oob_id, info_id, bt_oob_classic_lowenergy, bt_oob_rate, bt_oob_count, bt_oob_freq, 
+    bt_oob_result, bt_oob_judgement, bt_oob_time, bt_oob_delete
+    from bt_oob
+  </select>
+</mapper>

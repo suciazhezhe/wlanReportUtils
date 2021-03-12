@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.WlanSeMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.WlanSe">
+    <id column="wlan_se_id" jdbcType="VARCHAR" property="wlanSeId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="wlan_se_count" jdbcType="INTEGER" property="wlanSeCount" />
+    <result column="wlan_se_ant" jdbcType="VARCHAR" property="wlanSeAnt" />
+    <result column="wlan_se_model" jdbcType="VARCHAR" property="wlanSeModel" />
+    <result column="wlan_se_rate" jdbcType="VARCHAR" property="wlanSeRate" />
+    <result column="wlan_se_freq" jdbcType="VARCHAR" property="wlanSeFreq" />
+    <result column="wlan_se_band" jdbcType="VARCHAR" property="wlanSeBand" />
+    <result column="wlan_se_bandfreq" jdbcType="DOUBLE" property="wlanSeBandfreq" />
+    <result column="wlan_se_bandresult" jdbcType="DOUBLE" property="wlanSeBandresult" />
+    <result column="wlan_se_bandpicture" jdbcType="VARCHAR" property="wlanSeBandpicture" />
+    <result column="wlan_se_bandjudgement" jdbcType="BIT" property="wlanSeBandjudgement" />
+    <result column="wlan_se_time" jdbcType="TIMESTAMP" property="wlanSeTime" />
+    <result column="wlan_se_delete" jdbcType="BIT" property="wlanSeDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from wlan_se
+    where wlan_se_id = #{wlanSeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.WlanSe">
+    insert into wlan_se (wlan_se_id, info_id, wlan_se_count, 
+      wlan_se_ant, wlan_se_model, wlan_se_rate, 
+      wlan_se_freq, wlan_se_band, wlan_se_bandfreq, 
+      wlan_se_bandresult, wlan_se_bandpicture, wlan_se_bandjudgement, 
+      wlan_se_time, wlan_se_delete)
+    values (#{wlanSeId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{wlanSeCount,jdbcType=INTEGER}, 
+      #{wlanSeAnt,jdbcType=VARCHAR}, #{wlanSeModel,jdbcType=VARCHAR}, #{wlanSeRate,jdbcType=VARCHAR}, 
+      #{wlanSeFreq,jdbcType=VARCHAR}, #{wlanSeBand,jdbcType=VARCHAR}, #{wlanSeBandfreq,jdbcType=DOUBLE}, 
+      #{wlanSeBandresult,jdbcType=DOUBLE}, #{wlanSeBandpicture,jdbcType=VARCHAR}, #{wlanSeBandjudgement,jdbcType=BIT}, 
+      #{wlanSeTime,jdbcType=TIMESTAMP}, #{wlanSeDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.WlanSe">
+    update wlan_se
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      wlan_se_count = #{wlanSeCount,jdbcType=INTEGER},
+      wlan_se_ant = #{wlanSeAnt,jdbcType=VARCHAR},
+      wlan_se_model = #{wlanSeModel,jdbcType=VARCHAR},
+      wlan_se_rate = #{wlanSeRate,jdbcType=VARCHAR},
+      wlan_se_freq = #{wlanSeFreq,jdbcType=VARCHAR},
+      wlan_se_band = #{wlanSeBand,jdbcType=VARCHAR},
+      wlan_se_bandfreq = #{wlanSeBandfreq,jdbcType=DOUBLE},
+      wlan_se_bandresult = #{wlanSeBandresult,jdbcType=DOUBLE},
+      wlan_se_bandpicture = #{wlanSeBandpicture,jdbcType=VARCHAR},
+      wlan_se_bandjudgement = #{wlanSeBandjudgement,jdbcType=BIT},
+      wlan_se_time = #{wlanSeTime,jdbcType=TIMESTAMP},
+      wlan_se_delete = #{wlanSeDelete,jdbcType=BIT}
+    where wlan_se_id = #{wlanSeId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select wlan_se_id, info_id, wlan_se_count, wlan_se_ant, wlan_se_model, wlan_se_rate, 
+    wlan_se_freq, wlan_se_band, wlan_se_bandfreq, wlan_se_bandresult, wlan_se_bandpicture, 
+    wlan_se_bandjudgement, wlan_se_time, wlan_se_delete
+    from wlan_se
+    where wlan_se_id = #{wlanSeId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select wlan_se_id, info_id, wlan_se_count, wlan_se_ant, wlan_se_model, wlan_se_rate, 
+    wlan_se_freq, wlan_se_band, wlan_se_bandfreq, wlan_se_bandresult, wlan_se_bandpicture, 
+    wlan_se_bandjudgement, wlan_se_time, wlan_se_delete
+    from wlan_se
+  </select>
+  <select id="selectByInfoId" resultMap="BaseResultMap">
+    select wlan_se_id, info_id, wlan_se_count, wlan_se_ant, wlan_se_model, wlan_se_rate, 
+    wlan_se_freq, wlan_se_band, wlan_se_bandfreq, wlan_se_bandresult, wlan_se_bandpicture, 
+    wlan_se_bandjudgement, wlan_se_time, wlan_se_delete
+    from wlan_se
+    where info_id = #{infoId,jdbcType=VARCHAR} and wlan_se_delete = 0
+  </select>
+</mapper>

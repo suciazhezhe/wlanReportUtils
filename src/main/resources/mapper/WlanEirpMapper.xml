@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.WlanEirpMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.WlanEirp">
+    <id column="wlan_eirp_id" jdbcType="VARCHAR" property="wlanEirpId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="wlan_eirp_count" jdbcType="INTEGER" property="wlanEirpCount" />
+    <result column="wlan_eirp_ant" jdbcType="VARCHAR" property="wlanEirpAnt" />
+    <result column="wlan_eirp_model" jdbcType="VARCHAR" property="wlanEirpModel" />
+    <result column="wlan_eirp_rate" jdbcType="VARCHAR" property="wlanEirpRate" />
+    <result column="wlan_eirp_freq" jdbcType="VARCHAR" property="wlanEirpFreq" />
+    <result column="wlan_eirp_result" jdbcType="DOUBLE" property="wlanEirpResult" />
+    <result column="wlan_eirp_judgement" jdbcType="BIT" property="wlanEirpJudgement" />
+    <result column="wlan_eirp_time" jdbcType="TIMESTAMP" property="wlanEirpTime" />
+    <result column="wlan_eirp_delete" jdbcType="BIT" property="wlanEirpDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from wlan_eirp
+    where wlan_eirp_id = #{wlanEirpId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.WlanEirp">
+    insert into wlan_eirp (wlan_eirp_id, info_id, wlan_eirp_count, 
+      wlan_eirp_ant, wlan_eirp_model, wlan_eirp_rate, 
+      wlan_eirp_freq, wlan_eirp_result, wlan_eirp_judgement, 
+      wlan_eirp_time, wlan_eirp_delete)
+    values (#{wlanEirpId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{wlanEirpCount,jdbcType=INTEGER}, 
+      #{wlanEirpAnt,jdbcType=VARCHAR}, #{wlanEirpModel,jdbcType=VARCHAR}, #{wlanEirpRate,jdbcType=VARCHAR}, 
+      #{wlanEirpFreq,jdbcType=VARCHAR}, #{wlanEirpResult,jdbcType=DOUBLE}, #{wlanEirpJudgement,jdbcType=BIT}, 
+      #{wlanEirpTime,jdbcType=TIMESTAMP}, #{wlanEirpDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.WlanEirp">
+    update wlan_eirp
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      wlan_eirp_count = #{wlanEirpCount,jdbcType=INTEGER},
+      wlan_eirp_ant = #{wlanEirpAnt,jdbcType=VARCHAR},
+      wlan_eirp_model = #{wlanEirpModel,jdbcType=VARCHAR},
+      wlan_eirp_rate = #{wlanEirpRate,jdbcType=VARCHAR},
+      wlan_eirp_freq = #{wlanEirpFreq,jdbcType=VARCHAR},
+      wlan_eirp_result = #{wlanEirpResult,jdbcType=DOUBLE},
+      wlan_eirp_judgement = #{wlanEirpJudgement,jdbcType=BIT},
+      wlan_eirp_time = #{wlanEirpTime,jdbcType=TIMESTAMP},
+      wlan_eirp_delete = #{wlanEirpDelete,jdbcType=BIT}
+    where wlan_eirp_id = #{wlanEirpId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select wlan_eirp_id, info_id, wlan_eirp_count, wlan_eirp_ant, wlan_eirp_model, wlan_eirp_rate, 
+    wlan_eirp_freq, wlan_eirp_result, wlan_eirp_judgement, wlan_eirp_time, wlan_eirp_delete
+    from wlan_eirp
+    where wlan_eirp_id = #{wlanEirpId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select wlan_eirp_id, info_id, wlan_eirp_count, wlan_eirp_ant, wlan_eirp_model, wlan_eirp_rate, 
+    wlan_eirp_freq, wlan_eirp_result, wlan_eirp_judgement, wlan_eirp_time, wlan_eirp_delete
+    from wlan_eirp
+  </select>
+  <select id="selectByInfoId" resultMap="BaseResultMap">
+    select wlan_eirp_id, info_id, wlan_eirp_count, wlan_eirp_ant, wlan_eirp_model, wlan_eirp_rate, 
+    wlan_eirp_freq, wlan_eirp_result, wlan_eirp_judgement, wlan_eirp_time, wlan_eirp_delete
+    from wlan_eirp
+    where info_id = #{infoId,jdbcType=VARCHAR} and wlan_eirp_delete = 0
+  </select>
+</mapper>

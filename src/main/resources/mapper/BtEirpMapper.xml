@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.BtEirpMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.BtEirp">
+    <id column="bt_eirp_id" jdbcType="VARCHAR" property="btEirpId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="bt_eirp_classic_lowenergy" jdbcType="BIT" property="btEirpClassicLowenergy" />
+    <result column="bt_eirp_rate" jdbcType="DOUBLE" property="btEirpRate" />
+    <result column="bt_eirp_count" jdbcType="INTEGER" property="btEirpCount" />
+    <result column="bt_eirp_freq" jdbcType="DOUBLE" property="btEirpFreq" />
+    <result column="bt_eirp_result" jdbcType="DOUBLE" property="btEirpResult" />
+    <result column="bt_eirp_judgement" jdbcType="BIT" property="btEirpJudgement" />
+    <result column="bt_eirp_time" jdbcType="TIMESTAMP" property="btEirpTime" />
+    <result column="bt_eirp_delete" jdbcType="BIT" property="btEirpDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bt_eirp
+    where bt_eirp_id = #{btEirpId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.BtEirp">
+    insert into bt_eirp (bt_eirp_id, info_id, bt_eirp_classic_lowenergy, 
+      bt_eirp_rate, bt_eirp_count, bt_eirp_freq, 
+      bt_eirp_result, bt_eirp_judgement, bt_eirp_time, 
+      bt_eirp_delete)
+    values (#{btEirpId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{btEirpClassicLowenergy,jdbcType=BIT}, 
+      #{btEirpRate,jdbcType=DOUBLE}, #{btEirpCount,jdbcType=INTEGER}, #{btEirpFreq,jdbcType=DOUBLE}, 
+      #{btEirpResult,jdbcType=DOUBLE}, #{btEirpJudgement,jdbcType=BIT}, #{btEirpTime,jdbcType=TIMESTAMP}, 
+      #{btEirpDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.BtEirp">
+    update bt_eirp
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      bt_eirp_classic_lowenergy = #{btEirpClassicLowenergy,jdbcType=BIT},
+      bt_eirp_rate = #{btEirpRate,jdbcType=DOUBLE},
+      bt_eirp_count = #{btEirpCount,jdbcType=INTEGER},
+      bt_eirp_freq = #{btEirpFreq,jdbcType=DOUBLE},
+      bt_eirp_result = #{btEirpResult,jdbcType=DOUBLE},
+      bt_eirp_judgement = #{btEirpJudgement,jdbcType=BIT},
+      bt_eirp_time = #{btEirpTime,jdbcType=TIMESTAMP},
+      bt_eirp_delete = #{btEirpDelete,jdbcType=BIT}
+    where bt_eirp_id = #{btEirpId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select bt_eirp_id, info_id, bt_eirp_classic_lowenergy, bt_eirp_rate, bt_eirp_count, 
+    bt_eirp_freq, bt_eirp_result, bt_eirp_judgement, bt_eirp_time, bt_eirp_delete
+    from bt_eirp
+    where bt_eirp_id = #{btEirpId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bt_eirp_id, info_id, bt_eirp_classic_lowenergy, bt_eirp_rate, bt_eirp_count, 
+    bt_eirp_freq, bt_eirp_result, bt_eirp_judgement, bt_eirp_time, bt_eirp_delete
+    from bt_eirp
+  </select>
+</mapper>

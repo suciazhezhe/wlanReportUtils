@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.WlanMaxpowerMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.WlanMaxpower">
+    <id column="wlan_maxpower_id" jdbcType="VARCHAR" property="wlanMaxpowerId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="wlan_maxpower_count" jdbcType="INTEGER" property="wlanMaxpowerCount" />
+    <result column="wlan_maxpower_ant" jdbcType="VARCHAR" property="wlanMaxpowerAnt" />
+    <result column="wlan_maxpower_model" jdbcType="VARCHAR" property="wlanMaxpowerModel" />
+    <result column="wlan_maxpower_rate" jdbcType="VARCHAR" property="wlanMaxpowerRate" />
+    <result column="wlan_maxpower_freq" jdbcType="VARCHAR" property="wlanMaxpowerFreq" />
+    <result column="wlan_maxpower_result" jdbcType="DOUBLE" property="wlanMaxpowerResult" />
+    <result column="wlan_maxpower_judgement" jdbcType="BIT" property="wlanMaxpowerJudgement" />
+    <result column="wlan_maxpower_time" jdbcType="TIMESTAMP" property="wlanMaxpowerTime" />
+    <result column="wlan_maxpower_delete" jdbcType="BIT" property="wlanMaxpowerDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from wlan_maxpower
+    where wlan_maxpower_id = #{wlanMaxpowerId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.WlanMaxpower">
+    insert into wlan_maxpower (wlan_maxpower_id, info_id, wlan_maxpower_count, 
+      wlan_maxpower_ant, wlan_maxpower_model, wlan_maxpower_rate, 
+      wlan_maxpower_freq, wlan_maxpower_result, wlan_maxpower_judgement, 
+      wlan_maxpower_time, wlan_maxpower_delete)
+    values (#{wlanMaxpowerId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{wlanMaxpowerCount,jdbcType=INTEGER}, 
+      #{wlanMaxpowerAnt,jdbcType=VARCHAR}, #{wlanMaxpowerModel,jdbcType=VARCHAR}, #{wlanMaxpowerRate,jdbcType=VARCHAR}, 
+      #{wlanMaxpowerFreq,jdbcType=VARCHAR}, #{wlanMaxpowerResult,jdbcType=DOUBLE}, #{wlanMaxpowerJudgement,jdbcType=BIT}, 
+      #{wlanMaxpowerTime,jdbcType=TIMESTAMP}, #{wlanMaxpowerDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.WlanMaxpower">
+    update wlan_maxpower
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      wlan_maxpower_count = #{wlanMaxpowerCount,jdbcType=INTEGER},
+      wlan_maxpower_ant = #{wlanMaxpowerAnt,jdbcType=VARCHAR},
+      wlan_maxpower_model = #{wlanMaxpowerModel,jdbcType=VARCHAR},
+      wlan_maxpower_rate = #{wlanMaxpowerRate,jdbcType=VARCHAR},
+      wlan_maxpower_freq = #{wlanMaxpowerFreq,jdbcType=VARCHAR},
+      wlan_maxpower_result = #{wlanMaxpowerResult,jdbcType=DOUBLE},
+      wlan_maxpower_judgement = #{wlanMaxpowerJudgement,jdbcType=BIT},
+      wlan_maxpower_time = #{wlanMaxpowerTime,jdbcType=TIMESTAMP},
+      wlan_maxpower_delete = #{wlanMaxpowerDelete,jdbcType=BIT}
+    where wlan_maxpower_id = #{wlanMaxpowerId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select wlan_maxpower_id, info_id, wlan_maxpower_count, wlan_maxpower_ant, wlan_maxpower_model, 
+    wlan_maxpower_rate, wlan_maxpower_freq, wlan_maxpower_result, wlan_maxpower_judgement, 
+    wlan_maxpower_time, wlan_maxpower_delete
+    from wlan_maxpower
+    where wlan_maxpower_id = #{wlanMaxpowerId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select wlan_maxpower_id, info_id, wlan_maxpower_count, wlan_maxpower_ant, wlan_maxpower_model, 
+    wlan_maxpower_rate, wlan_maxpower_freq, wlan_maxpower_result, wlan_maxpower_judgement, 
+    wlan_maxpower_time, wlan_maxpower_delete
+    from wlan_maxpower
+  </select>
+  <select id="selectByInfoId" resultMap="BaseResultMap">
+    select wlan_maxpower_id, info_id, wlan_maxpower_count, wlan_maxpower_ant, wlan_maxpower_model, 
+    wlan_maxpower_rate, wlan_maxpower_freq, wlan_maxpower_result, wlan_maxpower_judgement, 
+    wlan_maxpower_time, wlan_maxpower_delete
+    from wlan_maxpower
+    where info_id = #{infoId,jdbcType=VARCHAR} and wlan_maxpower_delete = 0
+  </select>
+</mapper>

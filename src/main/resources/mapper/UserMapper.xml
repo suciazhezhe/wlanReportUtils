@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.User">
+    <id column="u_id" jdbcType="VARCHAR" property="uId" />
+    <result column="ut_id" jdbcType="VARCHAR" property="utId" />
+    <result column="u_name" jdbcType="VARCHAR" property="uName" />
+    <result column="u_password" jdbcType="VARCHAR" property="uPassword" />
+    <result column="u_delete" jdbcType="BIT" property="uDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user
+    where u_id = #{uId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.User">
+    insert into user (u_id, ut_id, u_name, 
+      u_password, u_delete)
+    values (#{uId,jdbcType=VARCHAR}, #{utId,jdbcType=VARCHAR}, #{uName,jdbcType=VARCHAR}, 
+      #{uPassword,jdbcType=VARCHAR}, #{uDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.User">
+    update user
+    set ut_id = #{utId,jdbcType=VARCHAR},
+      u_name = #{uName,jdbcType=VARCHAR},
+      u_password = #{uPassword,jdbcType=VARCHAR},
+      u_delete = #{uDelete,jdbcType=BIT}
+    where u_id = #{uId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select u_id, ut_id, u_name, u_password, u_delete
+    from user
+    where u_id = #{uId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select u_id, ut_id, u_name, u_password, u_delete
+    from user
+  </select>
+</mapper>

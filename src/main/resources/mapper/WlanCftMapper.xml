@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.WlanCftMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.WlanCft">
+    <id column="wlan_cft_id" jdbcType="VARCHAR" property="wlanCftId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="wlan_cft_count" jdbcType="INTEGER" property="wlanCftCount" />
+    <result column="wlan_cft_ant" jdbcType="VARCHAR" property="wlanCftAnt" />
+    <result column="wlan_cft_model" jdbcType="VARCHAR" property="wlanCftModel" />
+    <result column="wlan_cft_freq" jdbcType="VARCHAR" property="wlanCftFreq" />
+    <result column="wlan_cft_result" jdbcType="DOUBLE" property="wlanCftResult" />
+    <result column="wlan_cft_judgement" jdbcType="BIT" property="wlanCftJudgement" />
+    <result column="wlan_cft_time" jdbcType="TIMESTAMP" property="wlanCftTime" />
+    <result column="wlan_cft_delete" jdbcType="BIT" property="wlanCftDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from wlan_cft
+    where wlan_cft_id = #{wlanCftId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.WlanCft">
+    insert into wlan_cft (wlan_cft_id, info_id, wlan_cft_count, 
+      wlan_cft_ant, wlan_cft_model, wlan_cft_freq, 
+      wlan_cft_result, wlan_cft_judgement, wlan_cft_time, 
+      wlan_cft_delete)
+    values (#{wlanCftId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{wlanCftCount,jdbcType=INTEGER}, 
+      #{wlanCftAnt,jdbcType=VARCHAR}, #{wlanCftModel,jdbcType=VARCHAR}, #{wlanCftFreq,jdbcType=VARCHAR}, 
+      #{wlanCftResult,jdbcType=DOUBLE}, #{wlanCftJudgement,jdbcType=BIT}, #{wlanCftTime,jdbcType=TIMESTAMP}, 
+      #{wlanCftDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.WlanCft">
+    update wlan_cft
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      wlan_cft_count = #{wlanCftCount,jdbcType=INTEGER},
+      wlan_cft_ant = #{wlanCftAnt,jdbcType=VARCHAR},
+      wlan_cft_model = #{wlanCftModel,jdbcType=VARCHAR},
+      wlan_cft_freq = #{wlanCftFreq,jdbcType=VARCHAR},
+      wlan_cft_result = #{wlanCftResult,jdbcType=DOUBLE},
+      wlan_cft_judgement = #{wlanCftJudgement,jdbcType=BIT},
+      wlan_cft_time = #{wlanCftTime,jdbcType=TIMESTAMP},
+      wlan_cft_delete = #{wlanCftDelete,jdbcType=BIT}
+    where wlan_cft_id = #{wlanCftId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select wlan_cft_id, info_id, wlan_cft_count, wlan_cft_ant, wlan_cft_model, wlan_cft_freq, 
+    wlan_cft_result, wlan_cft_judgement, wlan_cft_time, wlan_cft_delete
+    from wlan_cft
+    where wlan_cft_id = #{wlanCftId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select wlan_cft_id, info_id, wlan_cft_count, wlan_cft_ant, wlan_cft_model, wlan_cft_freq, 
+    wlan_cft_result, wlan_cft_judgement, wlan_cft_time, wlan_cft_delete
+    from wlan_cft
+  </select>
+  <select id="selectByInfoId" resultMap="BaseResultMap">
+    select wlan_cft_id, info_id, wlan_cft_count, wlan_cft_ant, wlan_cft_model, wlan_cft_freq, 
+    wlan_cft_result, wlan_cft_judgement, wlan_cft_time, wlan_cft_delete
+    from wlan_cft
+    where info_id = #{infoId,jdbcType=VARCHAR} and wlan_cft_delete = 0
+  </select>
+</mapper>

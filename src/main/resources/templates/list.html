@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Wlan报告生成</title>  
+      <link rel="stylesheet" href="/webjars/bootstrap/4.6.0/css/bootstrap.min.css" />
+      <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>  
+      <script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>  
+   </head>
+   <body>
+      <div class="container">
+        <div class="row clearfix" style="margin-top: 20px;">
+           <h1>Wlan测试记录</h1>
+        </div>
+        <div class="row clearfix">
+            <form class="form-inline" role="form" action="/getList" method="post">
+			  <div class="form-group" style="margin: 10px;">
+			    <label for="name">设备型号</label>
+			    <input type="text" class="form-control input-sm" name="infoModel" placeholder="请输入型号" th:value="${infoModel}">
+			  </div>
+			  <div class="form-group"  style="margin: 10px;">
+			    <label for="name">设备名称</label>
+			    <input type="text" class="form-control input-sm" name="infoWb" placeholder="请输入名称" th:value="${infoWb}">
+			  </div>
+			  <button type="submit" class="btn btn-primary"  style="margin: 10px;">查询</button>
+			  <button type="button" id="btn-report" onclick="getWlanReport()" class="btn btn-primary"  style="margin: 10px;">报告生成</button>
+			  <p th:text="${errorInfo}"></p>
+			</form>
+        </div>
+        <div class="row clearfix" style="margin-top: 20px;">
+           <p>报告保存路径：</p>
+           <p id="p-path" th:text="${path}"></p>
+        </div>
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+		        <table class="table" >
+<!-- 				  <caption></caption> -->
+				   <thead>
+				    <tr>
+				      <th>选择</th>
+				      <th>报告编号</th>
+				      <th>设备名称</th>
+				      <th>设备型号</th>
+				      <th>测试时间</th>
+				    </tr>
+				   </thead>
+				   <tbody>
+				    <tr  th:each="item, sta:${list}">
+				     <td>
+				        <label class="radio-inline">
+					        <input type="radio" name="infoId" th:id="${item.infoModel}" th:value="${item.infoWb}">
+					    </label>
+				     </td>
+				     <td><p th:text="${item.infoEt}"></p></td>
+				     <td><p th:text="${item.infoWb}"></p></td>
+				     <td><p th:text="${item.infoModel}"></p></td>
+				     <td><p th:text="${#dates.format(item.infoTesttime, 'yyyy/MM/dd HH:mm')}"></p></td>
+				    </tr>
+				  </tbody>
+			    </table>
+			</div>
+		</div>
+	  </div>
+	  <!-- 模态框（Modal） -->
+		<div class="modal fade" id="getWlanReportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-body">请稍等……</div>
+		        </div><!-- /.modal-content -->
+		    </div><!-- /.modal -->
+		</div>
+ 
+     <script type="text/javascript">
+	    function getWlanReport() {
+	        var infoModel = $("input[name='infoId']:checked").attr("id");
+	        var infoWb = $("input[name='infoId']:checked").attr("value");
+	        if(null==infoModel||""==infoModel){
+	        	alert("请选中需要生成报告的测试记录。");
+	        	return;
+	        }
+	        // 1.创建一个FormData对象，直接把我们的表单传进去  
+// 	        var formData = new FormData(infoId);
+	        
+	        // 2.创建一个http请求对象
+	        var xmlHttpRequest = new XMLHttpRequest();
+	        $('#getWlanReportModal').modal('show');
+	        xmlHttpRequest.open('post', '/getWlanReport/'+infoModel+"/"+infoWb);
+	        xmlHttpRequest.onload = function(resp) {
+	            $('#getWlanReportModal').modal('hide');
+	            if (xmlHttpRequest.status == 200) {
+	            	var result = eval('(' + xmlHttpRequest.response + ')');
+	            	if(result.success){
+	            		alert('报告生成成功！报告路径：'+result.data);
+	            	}else{
+	            		alert('报告生成失败！'+result.msg);
+	            	}
+	            } else {
+	                alert('Error:' + xmlHttpRequest.status);
+	            }
+	        };
+	        xmlHttpRequest.send();
+	    }
+	</script> 
+   </body>
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.BtSeMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.BtSe">
+    <id column="bt_se_id" jdbcType="VARCHAR" property="btSeId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="bt_se_classic_lowenergy" jdbcType="BIT" property="btSeClassicLowenergy" />
+    <result column="bt_se_rate" jdbcType="DOUBLE" property="btSeRate" />
+    <result column="bt_se_count" jdbcType="INTEGER" property="btSeCount" />
+    <result column="bt_se_freq" jdbcType="DOUBLE" property="btSeFreq" />
+    <result column="bt_se_band" jdbcType="VARCHAR" property="btSeBand" />
+    <result column="bt_se_bandfreq" jdbcType="DOUBLE" property="btSeBandfreq" />
+    <result column="bt_se_bandresult" jdbcType="DOUBLE" property="btSeBandresult" />
+    <result column="bt_se_bandpicture" jdbcType="VARCHAR" property="btSeBandpicture" />
+    <result column="bt_se_bandjudgement" jdbcType="BIT" property="btSeBandjudgement" />
+    <result column="bt_se_time" jdbcType="TIMESTAMP" property="btSeTime" />
+    <result column="bt_se_delete" jdbcType="BIT" property="btSeDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bt_se
+    where bt_se_id = #{btSeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.BtSe">
+    insert into bt_se (bt_se_id, info_id, bt_se_classic_lowenergy, 
+      bt_se_rate, bt_se_count, bt_se_freq, 
+      bt_se_band, bt_se_bandfreq, bt_se_bandresult, 
+      bt_se_bandpicture, bt_se_bandjudgement, bt_se_time, 
+      bt_se_delete)
+    values (#{btSeId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{btSeClassicLowenergy,jdbcType=BIT}, 
+      #{btSeRate,jdbcType=DOUBLE}, #{btSeCount,jdbcType=INTEGER}, #{btSeFreq,jdbcType=DOUBLE}, 
+      #{btSeBand,jdbcType=VARCHAR}, #{btSeBandfreq,jdbcType=DOUBLE}, #{btSeBandresult,jdbcType=DOUBLE}, 
+      #{btSeBandpicture,jdbcType=VARCHAR}, #{btSeBandjudgement,jdbcType=BIT}, #{btSeTime,jdbcType=TIMESTAMP}, 
+      #{btSeDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.BtSe">
+    update bt_se
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      bt_se_classic_lowenergy = #{btSeClassicLowenergy,jdbcType=BIT},
+      bt_se_rate = #{btSeRate,jdbcType=DOUBLE},
+      bt_se_count = #{btSeCount,jdbcType=INTEGER},
+      bt_se_freq = #{btSeFreq,jdbcType=DOUBLE},
+      bt_se_band = #{btSeBand,jdbcType=VARCHAR},
+      bt_se_bandfreq = #{btSeBandfreq,jdbcType=DOUBLE},
+      bt_se_bandresult = #{btSeBandresult,jdbcType=DOUBLE},
+      bt_se_bandpicture = #{btSeBandpicture,jdbcType=VARCHAR},
+      bt_se_bandjudgement = #{btSeBandjudgement,jdbcType=BIT},
+      bt_se_time = #{btSeTime,jdbcType=TIMESTAMP},
+      bt_se_delete = #{btSeDelete,jdbcType=BIT}
+    where bt_se_id = #{btSeId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select bt_se_id, info_id, bt_se_classic_lowenergy, bt_se_rate, bt_se_count, bt_se_freq, 
+    bt_se_band, bt_se_bandfreq, bt_se_bandresult, bt_se_bandpicture, bt_se_bandjudgement, 
+    bt_se_time, bt_se_delete
+    from bt_se
+    where bt_se_id = #{btSeId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bt_se_id, info_id, bt_se_classic_lowenergy, bt_se_rate, bt_se_count, bt_se_freq, 
+    bt_se_band, bt_se_bandfreq, bt_se_bandresult, bt_se_bandpicture, bt_se_bandjudgement, 
+    bt_se_time, bt_se_delete
+    from bt_se
+  </select>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.InfoMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.Info">
+    <id column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="info_et" jdbcType="VARCHAR" property="infoEt" />
+    <result column="info_model" jdbcType="VARCHAR" property="infoModel" />
+    <result column="info_wb" jdbcType="VARCHAR" property="infoWb" />
+    <result column="info_producer" jdbcType="VARCHAR" property="infoProducer" />
+    <result column="info_address" jdbcType="VARCHAR" property="infoAddress" />
+    <result column="info_postcode" jdbcType="VARCHAR" property="infoPostcode" />
+    <result column="info_phone" jdbcType="VARCHAR" property="infoPhone" />
+    <result column="info_name" jdbcType="VARCHAR" property="infoName" />
+    <result column="info_email" jdbcType="VARCHAR" property="infoEmail" />
+    <result column="info_serialone" jdbcType="VARCHAR" property="infoSerialone" />
+    <result column="info_serialtwo" jdbcType="VARCHAR" property="infoSerialtwo" />
+    <result column="info_serialthree" jdbcType="VARCHAR" property="infoSerialthree" />
+    <result column="info_clamp" jdbcType="INTEGER" property="infoClamp" />
+    <result column="info_temp" jdbcType="DOUBLE" property="infoTemp" />
+    <result column="info_hum" jdbcType="DOUBLE" property="infoHum" />
+    <result column="info_atmos" jdbcType="DOUBLE" property="infoAtmos" />
+    <result column="info_accepttime" jdbcType="TIMESTAMP" property="infoAccepttime" />
+    <result column="info_receivetime" jdbcType="TIMESTAMP" property="infoReceivetime" />
+    <result column="info_testtime" jdbcType="TIMESTAMP" property="infoTesttime" />
+    <result column="info_time" jdbcType="TIMESTAMP" property="infoTime" />
+    <result column="info_delete" jdbcType="BIT" property="infoDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from info
+    where info_id = #{infoId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.Info">
+    insert into info (info_id, info_et, info_model, 
+      info_wb, info_producer, info_address, 
+      info_postcode, info_phone, info_name, 
+      info_email, info_serialone, info_serialtwo, 
+      info_serialthree, info_clamp, info_temp, 
+      info_hum, info_atmos, info_accepttime, 
+      info_receivetime, info_testtime, info_time, 
+      info_delete)
+    values (#{infoId,jdbcType=VARCHAR}, #{infoEt,jdbcType=VARCHAR}, #{infoModel,jdbcType=VARCHAR}, 
+      #{infoWb,jdbcType=VARCHAR}, #{infoProducer,jdbcType=VARCHAR}, #{infoAddress,jdbcType=VARCHAR}, 
+      #{infoPostcode,jdbcType=VARCHAR}, #{infoPhone,jdbcType=VARCHAR}, #{infoName,jdbcType=VARCHAR}, 
+      #{infoEmail,jdbcType=VARCHAR}, #{infoSerialone,jdbcType=VARCHAR}, #{infoSerialtwo,jdbcType=VARCHAR}, 
+      #{infoSerialthree,jdbcType=VARCHAR}, #{infoClamp,jdbcType=INTEGER}, #{infoTemp,jdbcType=DOUBLE}, 
+      #{infoHum,jdbcType=DOUBLE}, #{infoAtmos,jdbcType=DOUBLE}, #{infoAccepttime,jdbcType=TIMESTAMP}, 
+      #{infoReceivetime,jdbcType=TIMESTAMP}, #{infoTesttime,jdbcType=TIMESTAMP}, #{infoTime,jdbcType=TIMESTAMP}, 
+      #{infoDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.Info">
+    update info
+    set info_et = #{infoEt,jdbcType=VARCHAR},
+      info_model = #{infoModel,jdbcType=VARCHAR},
+      info_wb = #{infoWb,jdbcType=VARCHAR},
+      info_producer = #{infoProducer,jdbcType=VARCHAR},
+      info_address = #{infoAddress,jdbcType=VARCHAR},
+      info_postcode = #{infoPostcode,jdbcType=VARCHAR},
+      info_phone = #{infoPhone,jdbcType=VARCHAR},
+      info_name = #{infoName,jdbcType=VARCHAR},
+      info_email = #{infoEmail,jdbcType=VARCHAR},
+      info_serialone = #{infoSerialone,jdbcType=VARCHAR},
+      info_serialtwo = #{infoSerialtwo,jdbcType=VARCHAR},
+      info_serialthree = #{infoSerialthree,jdbcType=VARCHAR},
+      info_clamp = #{infoClamp,jdbcType=INTEGER},
+      info_temp = #{infoTemp,jdbcType=DOUBLE},
+      info_hum = #{infoHum,jdbcType=DOUBLE},
+      info_atmos = #{infoAtmos,jdbcType=DOUBLE},
+      info_accepttime = #{infoAccepttime,jdbcType=TIMESTAMP},
+      info_receivetime = #{infoReceivetime,jdbcType=TIMESTAMP},
+      info_testtime = #{infoTesttime,jdbcType=TIMESTAMP},
+      info_time = #{infoTime,jdbcType=TIMESTAMP},
+      info_delete = #{infoDelete,jdbcType=BIT}
+    where info_id = #{infoId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select info_id, info_et, info_model, info_wb, info_producer, info_address, info_postcode, 
+    info_phone, info_name, info_email, info_serialone, info_serialtwo, info_serialthree, 
+    info_clamp, info_temp, info_hum, info_atmos, info_accepttime, info_receivetime, info_testtime, 
+    info_time, info_delete
+    from info
+    where info_id = #{infoId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByInfoKey" resultMap="BaseResultMap">
+    select info_id, info_et, info_model, info_wb, info_producer, info_address, info_postcode, 
+    info_phone, info_name, info_email, info_serialone, info_serialtwo, info_serialthree, 
+    info_clamp, info_temp, info_hum, info_atmos, info_accepttime, info_receivetime, info_testtime, 
+    info_time, info_delete
+    from info
+    where info_model = #{infoModel,jdbcType=VARCHAR} and info_wb = #{infoWb,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListByInfoKey" resultMap="BaseResultMap">
+    select info_id, info_et, info_model, info_wb, info_producer, info_address, info_postcode, 
+    info_phone, info_name, info_email, info_serialone, info_serialtwo, info_serialthree, 
+    info_clamp, info_temp, info_hum, info_atmos, info_accepttime, info_receivetime, info_testtime, 
+    info_time, info_delete
+    from info
+    where info_model like #{infoModel,jdbcType=VARCHAR} and info_wb like #{infoWb,jdbcType=VARCHAR}  and info_wb like #{infoWbSign,jdbcType=VARCHAR}
+    order by info_testtime DESC
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select info_id, info_et, info_model, info_wb, info_producer, info_address, info_postcode, 
+    info_phone, info_name, info_email, info_serialone, info_serialtwo, info_serialthree, 
+    info_clamp, info_temp, info_hum, info_atmos, info_accepttime, info_receivetime, info_testtime, 
+    info_time, info_delete
+    from info
+  </select>
+</mapper>

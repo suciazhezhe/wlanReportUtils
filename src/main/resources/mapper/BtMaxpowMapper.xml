@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.BtMaxpowMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.BtMaxpow">
+    <id column="bt_maxpow_id" jdbcType="VARCHAR" property="btMaxpowId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="bt_maxpow_classic_lowenergy" jdbcType="BIT" property="btMaxpowClassicLowenergy" />
+    <result column="bt_maxpow_rate" jdbcType="DOUBLE" property="btMaxpowRate" />
+    <result column="bt_maxpow_count" jdbcType="INTEGER" property="btMaxpowCount" />
+    <result column="bt_maxpow_freq" jdbcType="DOUBLE" property="btMaxpowFreq" />
+    <result column="bt_maxpow_result" jdbcType="DOUBLE" property="btMaxpowResult" />
+    <result column="bt_maxpow_judgement" jdbcType="BIT" property="btMaxpowJudgement" />
+    <result column="bt_maxpow_time" jdbcType="TIMESTAMP" property="btMaxpowTime" />
+    <result column="bt_maxpow_delete" jdbcType="BIT" property="btMaxpowDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bt_maxpow
+    where bt_maxpow_id = #{btMaxpowId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.BtMaxpow">
+    insert into bt_maxpow (bt_maxpow_id, info_id, bt_maxpow_classic_lowenergy, 
+      bt_maxpow_rate, bt_maxpow_count, bt_maxpow_freq, 
+      bt_maxpow_result, bt_maxpow_judgement, bt_maxpow_time, 
+      bt_maxpow_delete)
+    values (#{btMaxpowId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{btMaxpowClassicLowenergy,jdbcType=BIT}, 
+      #{btMaxpowRate,jdbcType=DOUBLE}, #{btMaxpowCount,jdbcType=INTEGER}, #{btMaxpowFreq,jdbcType=DOUBLE}, 
+      #{btMaxpowResult,jdbcType=DOUBLE}, #{btMaxpowJudgement,jdbcType=BIT}, #{btMaxpowTime,jdbcType=TIMESTAMP}, 
+      #{btMaxpowDelete,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.BtMaxpow">
+    update bt_maxpow
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      bt_maxpow_classic_lowenergy = #{btMaxpowClassicLowenergy,jdbcType=BIT},
+      bt_maxpow_rate = #{btMaxpowRate,jdbcType=DOUBLE},
+      bt_maxpow_count = #{btMaxpowCount,jdbcType=INTEGER},
+      bt_maxpow_freq = #{btMaxpowFreq,jdbcType=DOUBLE},
+      bt_maxpow_result = #{btMaxpowResult,jdbcType=DOUBLE},
+      bt_maxpow_judgement = #{btMaxpowJudgement,jdbcType=BIT},
+      bt_maxpow_time = #{btMaxpowTime,jdbcType=TIMESTAMP},
+      bt_maxpow_delete = #{btMaxpowDelete,jdbcType=BIT}
+    where bt_maxpow_id = #{btMaxpowId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select bt_maxpow_id, info_id, bt_maxpow_classic_lowenergy, bt_maxpow_rate, bt_maxpow_count, 
+    bt_maxpow_freq, bt_maxpow_result, bt_maxpow_judgement, bt_maxpow_time, bt_maxpow_delete
+    from bt_maxpow
+    where bt_maxpow_id = #{btMaxpowId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bt_maxpow_id, info_id, bt_maxpow_classic_lowenergy, bt_maxpow_rate, bt_maxpow_count, 
+    bt_maxpow_freq, bt_maxpow_result, bt_maxpow_judgement, bt_maxpow_time, bt_maxpow_delete
+    from bt_maxpow
+  </select>
+</mapper>

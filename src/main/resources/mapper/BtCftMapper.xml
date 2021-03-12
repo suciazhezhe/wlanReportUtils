@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzteleader.wlanReportUtils.dao.BtCftMapper">
+  <resultMap id="BaseResultMap" type="com.gzteleader.wlanReportUtils.entity.BtCft">
+    <id column="bt_cft_id" jdbcType="VARCHAR" property="btCftId" />
+    <result column="info_id" jdbcType="VARCHAR" property="infoId" />
+    <result column="bt_cft_classic_lowenergy" jdbcType="BIT" property="btCftClassicLowenergy" />
+    <result column="bt_cft_count" jdbcType="INTEGER" property="btCftCount" />
+    <result column="bt_cft_freq" jdbcType="DOUBLE" property="btCftFreq" />
+    <result column="bt_cft_result" jdbcType="DOUBLE" property="btCftResult" />
+    <result column="bt_cft_judgement" jdbcType="BIT" property="btCftJudgement" />
+    <result column="bt_cft_time" jdbcType="TIMESTAMP" property="btCftTime" />
+    <result column="bt_cft_delete" jdbcType="BIT" property="btCftDelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bt_cft
+    where bt_cft_id = #{btCftId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gzteleader.wlanReportUtils.entity.BtCft">
+    insert into bt_cft (bt_cft_id, info_id, bt_cft_classic_lowenergy, 
+      bt_cft_count, bt_cft_freq, bt_cft_result, 
+      bt_cft_judgement, bt_cft_time, bt_cft_delete
+      )
+    values (#{btCftId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{btCftClassicLowenergy,jdbcType=BIT}, 
+      #{btCftCount,jdbcType=INTEGER}, #{btCftFreq,jdbcType=DOUBLE}, #{btCftResult,jdbcType=DOUBLE}, 
+      #{btCftJudgement,jdbcType=BIT}, #{btCftTime,jdbcType=TIMESTAMP}, #{btCftDelete,jdbcType=BIT}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gzteleader.wlanReportUtils.entity.BtCft">
+    update bt_cft
+    set info_id = #{infoId,jdbcType=VARCHAR},
+      bt_cft_classic_lowenergy = #{btCftClassicLowenergy,jdbcType=BIT},
+      bt_cft_count = #{btCftCount,jdbcType=INTEGER},
+      bt_cft_freq = #{btCftFreq,jdbcType=DOUBLE},
+      bt_cft_result = #{btCftResult,jdbcType=DOUBLE},
+      bt_cft_judgement = #{btCftJudgement,jdbcType=BIT},
+      bt_cft_time = #{btCftTime,jdbcType=TIMESTAMP},
+      bt_cft_delete = #{btCftDelete,jdbcType=BIT}
+    where bt_cft_id = #{btCftId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select bt_cft_id, info_id, bt_cft_classic_lowenergy, bt_cft_count, bt_cft_freq, bt_cft_result, 
+    bt_cft_judgement, bt_cft_time, bt_cft_delete
+    from bt_cft
+    where bt_cft_id = #{btCftId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bt_cft_id, info_id, bt_cft_classic_lowenergy, bt_cft_count, bt_cft_freq, bt_cft_result, 
+    bt_cft_judgement, bt_cft_time, bt_cft_delete
+    from bt_cft
+  </select>
+</mapper>
