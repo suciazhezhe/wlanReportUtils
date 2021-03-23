@@ -56,6 +56,8 @@ public class ReportDateServiceImpl implements ReportDateService{
 		//页眉替换和原来字符长度不一样会导致页码出错
 		baseInfo.put("TA-GZTD0000-0000-0", info.getInfoEt());
 		baseInfo.put("infoWb", infoWb.replace("设备", ""));
+		baseInfo.put("infoWb1", infoWb.replace("设备", "").replace("GHz", "GHz频段"));
+		baseInfo.put("infoModel", infoModel);
 		baseInfo.put("infoClamp", info.getInfoClamp().toString());
 		baseInfo.put("infoTemp", info.getInfoTemp().toString());
 		baseInfo.put("infoHum", info.getInfoHum().toString());

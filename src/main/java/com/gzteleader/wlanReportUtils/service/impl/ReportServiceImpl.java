@@ -30,7 +30,8 @@ public class ReportServiceImpl implements ReportService{
 		ReportGenerator reportGenerator = new ReportGenerator(wlanReportProperties, reportData.getInfoEt(), infoWb);
 		//生成基本信息部分
 		reportGenerator.generateBaseInfoReport(reportData);
-		getReportResultData(reportData,reportGenerator);
+		//生成附件部分
+		getReportResult(reportData,reportGenerator);
 		//仪表及附件部分
 		reportGenerator.addInstrument(reportData);
 		//存图文档
@@ -95,7 +96,7 @@ public class ReportServiceImpl implements ReportService{
 		return reportData;
 	}
 	
-	private void getReportResultData(ReportData reportData,ReportGenerator reportGenerator) throws Exception {
+	private void getReportResult(ReportData reportData,ReportGenerator reportGenerator) throws Exception {
 		Set<String> testItems = reportData.getTestItems().keySet();
 		 for(String testItem : testItems) {
 			 switch(testItem){

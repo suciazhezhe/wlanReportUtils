@@ -1,19 +1,28 @@
 package com.gzteleader.wlanReportUtils.Utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFPictureData;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
 
 import com.deepoove.poi.util.TableTools;
 import com.gzteleader.wlanReportUtils.bean.FormatResult;
@@ -30,6 +39,8 @@ public class ReportGenerator {
 	private String reportName;
 	//最后要保存的文件路径，包括名称，不带.docx
 	private String reportPath;
+	private String picReportPath;
+	private String dataReportPath;
 	//测试系统main路径
 	private String testSystemMainPath;
 	
@@ -39,18 +50,25 @@ public class ReportGenerator {
 	
 	private Map<String,Integer> seLimits;
 	
-	private List<String> temDocxList = new ArrayList<String>();
+	private List<String> reportTemDocxList = new ArrayList<String>();
+	
+	private List<String> dataTemDocxList = new ArrayList<String>();
+	
+	private List<String> pictureTemDocxList = new ArrayList<String>();
 	
 	public ReportGenerator(WlanReportProperties wlanReportProperties,String infoEt,String infoWb) {
 		super();
 		temRootPath = wlanReportProperties.getTemRootPath();
 		reportName = infoEt+"附件："+infoWb+"部分";
 		reportPath = wlanReportProperties.getPath()+reportName;
+		dataReportPath = wlanReportProperties.getPath()+infoEt+"记录："+infoWb;
+		picReportPath = wlanReportProperties.getPath()+infoEt+"记录：测试存图"+infoWb;
 		this.infoWb = infoWb;
 		this.testSystemMainPath = wlanReportProperties.getTestSystemPath();
 	}
 	
 	public void generateBaseInfoReport(ReportData reportData) throws IOException {
+		//报告附件基本信息部分
 		ClassPathResource classPathResource = new ClassPathResource(ReportData.BASE_INFO_DOCX);
 		InputStream is =classPathResource.getInputStream();
 		XWPFDocument doc = new XWPFDocument(is);
@@ -66,7 +84,54 @@ public class ReportGenerator {
 		//删除表格里面有key没值的行，检测项目
 		WordUtils.removeTableRow(tables.get(1),notValueRows);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-baseInfo.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
+		FileUtils.closeStream(is);
+		
+		//存图文档基本信息部分
+		classPathResource = new ClassPathResource(ReportData.PIC_BASE_INFO_DOCX);
+		is =classPathResource.getInputStream();
+		doc = new XWPFDocument(is);
+		//替换页眉关键字
+		WordUtils.replaceHeader(doc, reportData.getBaseInfo());
+		//替换段落里面的文本
+		WordUtils.replaceText(doc, reportData.getBaseInfo());
+		//替换表格里面的文本，设备序列号表格
+		WordUtils.replaceTable(doc, reportData.getBaseInfo());
+		String picPath = WordUtils.saveFile(doc, temRootPath+reportName+"-picBaseInfo.docx");
+		pictureTemDocxList.add(picPath);
+		FileUtils.closeStream(is);
+		
+		//原始记录基本信息部分1
+		classPathResource = new ClassPathResource(ReportData.DATA_BASE_INFO_DOCX1);
+		is =classPathResource.getInputStream();
+		doc = new XWPFDocument(is);
+		//替换页眉关键字
+		WordUtils.replaceHeader(doc, reportData.getBaseInfo());
+		//替换段落里面的文本
+		WordUtils.replaceText(doc, reportData.getBaseInfo());
+		//替换表格里面的文本，设备序列号表格
+		WordUtils.replaceTable(doc, reportData.getBaseInfo());
+		String dataPath1 = WordUtils.saveFile(doc, temRootPath+reportName+"-dataBaseInfo1.docx");
+		dataTemDocxList.add(dataPath1);
+		FileUtils.closeStream(is);
+		//原始记录检测依据和技术参数部分
+		classPathResource = new ClassPathResource(reportData.getTemplateDocx()+"-standard.docx");
+		is =classPathResource.getInputStream();
+		doc = new XWPFDocument(is);
+		String standardPath = WordUtils.saveFile(doc, temRootPath+reportName+"-standard.docx");
+		dataTemDocxList.add(standardPath);
+		FileUtils.closeStream(is);
+		//原始记录基本信息部分2
+		classPathResource = new ClassPathResource(ReportData.DATA_BASE_INFO_DOCX2);
+		is =classPathResource.getInputStream();
+		doc = new XWPFDocument(is);
+		//替换表格里面的文本，检测项目表格
+		tables = doc.getTables();
+		notValueRows = WordUtils.replaceTable(tables.get(0), reportData.getTestItems());
+		//删除表格里面有key没值的行，检测项目
+		WordUtils.removeTableRow(tables.get(0),notValueRows);
+		String dataPath2 = WordUtils.saveFile(doc, temRootPath+reportName+"-dataBaseInfo2.docx");
+		dataTemDocxList.add(dataPath2);
 		FileUtils.closeStream(is);
 	}
 	
@@ -75,7 +140,8 @@ public class ReportGenerator {
 		InputStream is =classPathResource.getInputStream();
 		XWPFDocument doc = new XWPFDocument(is);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-instrument.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
+		dataTemDocxList.add(path);
 		FileUtils.closeStream(is);
 	}
 	
@@ -87,13 +153,10 @@ public class ReportGenerator {
 		XWPFDocument doc = new XWPFDocument(is);
 		doc = generateSePicture(reportData.getWlanSePictureMap(),doc);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-picture.docx");
-		temDocxList.add(path);
+		pictureTemDocxList.add(path);
 		FileUtils.closeStream(is);
 		
 	}
-	
-
-
 	@SuppressWarnings("resource")
 	public void addEirpPart(ReportData reportData) throws IOException {
 		ClassPathResource classPathResource = new ClassPathResource(reportData.getTemplateDocx()+"-eirp.docx");
@@ -103,10 +166,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanEirpMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(dBm)","P<SUBSCRIPT>eirp</SUBSCRIPT>");
+		//生成原始记录
+		generateDataPart("eirp",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-eirp.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 	}
 	
@@ -119,10 +184,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanMaxpowMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(dBm/MHz)","PSD<SUBSCRIPT>eirp</SUBSCRIPT>");
+		//生成原始记录
+		generateDataPart("maxpow",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-maxpow.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 	}
 	
@@ -135,10 +202,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanOobMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(dBm/Hz)","");
+		//生成原始记录
+		generateDataPart("oob",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-oob.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 		
 	}
@@ -152,10 +221,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanFreqMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(GHz)","");
+		//生成原始记录
+		generateDataPart("freq",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.2 MHz"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-freq.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 	}
 
@@ -168,10 +239,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanObwMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(MHz)","");
+		//生成原始记录
+		generateDataPart("obw",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.2 MHz"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-obw.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 		
 	}
@@ -185,10 +258,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanCftMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(×10<SUPERSCRIPT>-6</SUPERSCRIPT>)","");
+		//生成原始记录
+		generateDataPart("cft",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.1×10<SUPERSCRIPT>-6</SUPERSCRIPT>"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-cft.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 		
 	}
@@ -202,10 +277,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanTpMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(dBm)","");
+		//生成原始记录
+		generateDataPart("tp",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-tp.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 	}
 
@@ -218,10 +295,12 @@ public class ReportGenerator {
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanMpMap();
 		//生成核心报告表格
 		doc = generateOneItem(wlanResultMap,doc,"(dBm/MHz)","");
+		//生成原始记录
+		generateDataPart("mp",doc);
 		//生成不确定度表格
 		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-mp.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 		
 	}
@@ -240,17 +319,86 @@ public class ReportGenerator {
 		List<XWPFParagraph> ps = doc.getParagraphs();
 		XWPFParagraph p = ps.get(ps.size()-1);
 		p.removeRun(0);
+		//生成原始记录
+		generateDataPart("se",doc);
 		//生成不确定度表格
 		doc = generateSeUncertainty(doc);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-se.docx");
-		temDocxList.add(path);
+		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
 	}
 
 	public String mergeReport() throws Exception {
-		String path = WordUtils.merge(temDocxList, reportPath+".docx");
-		FileUtils.deleteFile(temDocxList);
+		//报告附件
+		String path = WordUtils.merge(reportTemDocxList, reportPath+".docx");
+		//存图文件
+		WordUtils.merge(pictureTemDocxList, picReportPath+".docx");
+		//原始记录
+		WordUtils.merge(dataTemDocxList, dataReportPath+".docx");
+		FileUtils.deleteFile(pictureTemDocxList);
+		FileUtils.deleteFile(reportTemDocxList);
+		FileUtils.deleteFile(dataTemDocxList);
 		return path;
+	}
+
+	//将生成的附件删除结论行，形成原始记录
+	private void generateDataPart(String itemName,XWPFDocument doc) throws IOException {
+		String dataPath = temRootPath+reportName+itemName+"-data.docx";
+		OutputStream os = new FileOutputStream(dataPath);
+		//把doc输出到输出流中
+		doc.write(os);
+		File file = ResourceUtils.getFile(dataPath);
+		InputStream is = new FileInputStream(file);
+		XWPFDocument dataDoc = new XWPFDocument(is);
+		List<XWPFTable> tables = dataDoc.getTables();
+		for(XWPFTable table : tables) {
+			List<XWPFTableRow> rows = table.getRows();
+			XWPFTableRow lastRow = rows.get(rows.size()-1);
+			List<XWPFTableCell> cells = lastRow.getTableCells();
+			String text = cells.get(0).getText();
+			if("结论".equals(text)) {
+				WordUtils.removeTableRow(table,rows.size()-1);
+			}
+		}
+		if("se".equals(itemName)) {
+			if(tables.size()>2) {
+				XWPFTable table = tables.get(2);
+				List<XWPFTableRow> rows = table.getRows();
+				for(int i =3;i<rows.size();i++) {
+					List<XWPFTableCell> cells = rows.get(i).getTableCells();
+					XWPFTableCell cell = cells.get(2);
+					String text = cell.getText();
+					List<XWPFParagraph> ps = cell.getParagraphs();
+					if(text.indexOf("图")!=-1&&ps.size()==2) {
+						cell.removeParagraph(1);
+					}
+				}
+			}
+			List<XWPFParagraph> ps = dataDoc.getParagraphs();
+			for(int i =0;i<ps.size();i++) {
+				XWPFParagraph p = ps.get(i);
+				String text = p.getText();
+				if(text.indexOf("图")!=-1&&text.indexOf("Hz")!=-1) {
+					dataDoc.removeBodyElement(dataDoc.getPosOfParagraph(p));
+					dataDoc.removeBodyElement(dataDoc.getPosOfParagraph(ps.get(i-1)));
+					i = i-2;
+				}
+			}
+//			List<XWPFPictureData> pictures = doc.getAllPictures();
+//			for(XWPFPictureData picture:pictures) {
+//				POIXMLDocumentPart p = picture.getParent();
+//				doc.removeBodyElement(doc.getParagraph(p));
+//			}
+
+		}
+		
+		
+		//分页符
+		XWPFRun run = WordUtils.createRun(dataDoc);
+		run.addBreak(BreakType.PAGE);
+		//保存文档
+		dataPath = WordUtils.saveFile(dataDoc, dataPath);
+		dataTemDocxList.add(dataPath);
 	}
 
 	private XWPFDocument generateOneItem(TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap,

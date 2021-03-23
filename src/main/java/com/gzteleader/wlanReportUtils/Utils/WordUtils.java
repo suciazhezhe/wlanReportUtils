@@ -183,6 +183,10 @@ public class WordUtils {
 		}
 	}
 	
+	public static void removeTableRow(XWPFTable table,Integer row) {
+			table.removeRow(row);
+	}
+	
 	public static XWPFParagraph findTextRun(XWPFDocument doc,String label) {
 		List<XWPFParagraph> list = doc.getParagraphs();
 		for(XWPFParagraph paragraph : list) {

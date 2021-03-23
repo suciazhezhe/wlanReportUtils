@@ -11,6 +11,12 @@ public class ReportData {
 	
 	public static String BASE_INFO_DOCX = "wlanTemplate/baseInfo.docx";
 	
+	public static String PIC_BASE_INFO_DOCX = "wlanTemplate/picBaseInfo.docx";
+	
+	public static String DATA_BASE_INFO_DOCX1 = "wlanTemplate/dataBaseInfo1.docx";
+	
+	public static String DATA_BASE_INFO_DOCX2 = "wlanTemplate/dataBaseInfo2.docx";
+	
 	public static String INSTRUMENT_DOCX = "wlanTemplate/instrument.docx";
 	
 	public static String PICTURE_DOCX = "wlanTemplate/picture.docx";
