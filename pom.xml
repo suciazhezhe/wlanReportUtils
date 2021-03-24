@@ -15,7 +15,7 @@
 	<description>wlan report generate</description>
 
 	<properties>
-		<java.version>1.0</java.version>
+		<java.version>0.0.1</java.version>
 	</properties>
 
 	<dependencies>

@@ -187,7 +187,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("maxpow",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.78dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-maxpow.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -205,7 +205,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("oob",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.78dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-oob.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -224,7 +224,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("freq",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.2 MHz"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.16MHz"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-freq.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -242,7 +242,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("obw",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.2 MHz"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.16MHz"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-obw.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -261,7 +261,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("cft",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.1×10<SUPERSCRIPT>-6</SUPERSCRIPT>"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.06×10<SUPERSCRIPT>-6</SUPERSCRIPT>"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-cft.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
