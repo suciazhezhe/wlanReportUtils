@@ -1,0 +1,45 @@
+server:
+  port: 81
+    
+spring:
+  application:
+    name: wlanReportUtils
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: GGJS5630
+    url: jdbc:mysql://127.0.0.1:3306/wbats_db?characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useTimezone=true&serverTimezone=GMT%2B8
+    #zeroDateTimeBehavior=CONVERT_TO_NULL   mybatis timestamp为0时 需要允许为null
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 1
+
+logging:
+  file:
+    path: /spring/log/wlanReportUtils
+  pattern:
+    console: "%d - %msg%n"
+  level:
+    com.gzteleader.wlanReportUtils.dao: trace
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.gzteleader.wlanReportUtils.entity
+  configuration:
+    call-setters-on-nulls: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false    
+  
+wlan-report:
+  test-item:
+    {'[2.4GHz无线局域网设备]': {eirp: 等效全向辐射功率（EIRP）,maxpow: 最大功率谱密度,oob: 带外发射功率,freq: 频率范围,obw: 占用带宽,cft: 载频容限,se: 杂散发射（辐射）功率},
+     '[5.1GHz无线局域网设备]': {eirp: 最大等效全向辐射功率（EIRP）,maxpow: 最大等效全向功率谱密度,oob: 使用频率上下限处的最大辐射功率,freq: 频率范围,obw: 占用带宽,cft: 载频容限,se: 杂散辐射},
+     '[5.8GHz无线局域网设备]': {eirp: 等效全向辐射功率（EIRP）,maxpow: 最大功率谱密度（EIRP）,oob: 带外发射功率（EIRP）,freq: 频率范围,obw: 占用带宽,cft: 载频容限,se: 杂散发射（辐射）功率,tp: 发射功率,mp: 最大功率谱密度}}
+  se-limit:
+    {'[2.4GHz无线局域网设备]': {'[30MHz~1000MHz]': -36,'[2.4GHz~2.4835GHz]': -33,'[3.4GHz~3.53GHz]': -40,'[5.725GHz~5.85GHz]': -40,'[1GHz~40GHz]': -30},
+     '[5.1GHz无线局域网设备]': {'[30MHz~1000MHz]': -36,'[48.5MHz~72.5MHz]': -54,'[76MHz~118MHz]': -54,'[167MHz~223MHz]': -54,'[470MHz~798MHz]': -54,'[2.4GHz~2.4835GHz]': -40,'[5.15GHz~5.35GHz]': -33,'[5.47GHz~5.85GHz]': -40,'[1GHz~40GHz]': -30},
+     '[5.8GHz无线局域网设备]': {'[30MHz~1000MHz]': -36,'[2.4GHz~2.4835GHz]': -40,'[3.4GHz~3.53GHz]': -40,'[5.725GHz~5.85GHz]': -33,'[1GHz~40GHz]': -30}}
+  path: C:\Users\Administrator\Desktop\WLANBT测试系统\Report\
+  test-system-path: C:\Users\Administrator\Desktop\WLANBT测试系统\
+    
