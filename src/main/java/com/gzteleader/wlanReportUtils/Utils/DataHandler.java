@@ -69,7 +69,7 @@ public class DataHandler {
 	 * @param pLabel  如：P<SUBSCRIPT>eirp</SUBSCRIPT>
 	 * @return
 	 */
-	public static TableData toWlanTableData(TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>> antMap,String unit,String pLabel) {
+	public static TableData toWlanTableData(TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>> antMap,String unit,String pLabel,String accuracy) {
 
 		TableData tableData = new TableData();		
 		List<List<String>> data = new ArrayList<List<String>>();
@@ -164,7 +164,7 @@ public class DataHandler {
 						for(String freq:maxfreqSet) {
 							FormatResult formatResult = freqMap.get(freq);
 							if(null!=formatResult) {
-								String result = String.format("%.2f", formatResult.getResult());
+								String result = String.format("%."+accuracy+"f", formatResult.getResult());
 								antRow.add(result);
 								String conclusion = conclusionRow.get(column);
 								if("--".equals(conclusion)) {
@@ -431,7 +431,7 @@ public class DataHandler {
 		return result;
 	}
 
-	//o1前o后,返回-1
+	//o1前o2后,返回-1
 	//o1=o2,返回0
 	//o2前o1后,返回1
     //要注意在比较函数compare的返回值中要包含0（相等），不然可能会出现Comparison method violates its general contract!异常。
@@ -483,7 +483,13 @@ public class DataHandler {
   	private static Comparator<String> freqComparator = new Comparator<String>() {
           @Override
           public int compare(String freq1, String freq2) {
-        	 return freq1.compareTo(freq2);
+        	  if("fL".equals(freq1)) {
+        		  return -1;
+        	  }else if("fL".equals(freq2)) {
+        		  return 1;
+        	  }else {
+        		  return freq1.compareTo(freq2);
+        	  }
           }
     };
     

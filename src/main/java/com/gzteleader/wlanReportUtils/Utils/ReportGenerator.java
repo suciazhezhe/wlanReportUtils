@@ -12,11 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFPictureData;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -165,7 +163,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanEirpMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(dBm)","P<SUBSCRIPT>eirp</SUBSCRIPT>");
+		doc = generateOneItem(wlanResultMap,doc,"(dBm)","P<SUBSCRIPT>eirp</SUBSCRIPT>","2");
 		//生成原始记录
 		generateDataPart("eirp",doc);
 		//生成不确定度表格
@@ -183,7 +181,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanMaxpowMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(dBm/MHz)","PSD<SUBSCRIPT>eirp</SUBSCRIPT>");
+		doc = generateOneItem(wlanResultMap,doc,"(dBm/MHz)","PSD<SUBSCRIPT>eirp</SUBSCRIPT>","2");
 		//生成原始记录
 		generateDataPart("maxpow",doc);
 		//生成不确定度表格
@@ -201,7 +199,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model                                                                                                  这里记得要改
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanOobMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(dBm/Hz)","");
+		doc = generateOneItem(wlanResultMap,doc,"(dBm/Hz)","","2");
 		//生成原始记录
 		generateDataPart("oob",doc);
 		//生成不确定度表格
@@ -220,7 +218,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model                                                                                                  这里记得要改
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanFreqMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(GHz)","");
+		doc = generateOneItem(wlanResultMap,doc,"(GHz)","","5");
 		//生成原始记录
 		generateDataPart("freq",doc);
 		//生成不确定度表格
@@ -238,7 +236,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model                                                                                                  这里记得要改
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanObwMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(MHz)","");
+		doc = generateOneItem(wlanResultMap,doc,"(MHz)","","2");
 		//生成原始记录
 		generateDataPart("obw",doc);
 		//生成不确定度表格
@@ -257,7 +255,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model                                                                                                  这里记得要改
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanCftMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(×10<SUPERSCRIPT>-6</SUPERSCRIPT>)","");
+		doc = generateOneItem(wlanResultMap,doc,"(×10<SUPERSCRIPT>-6</SUPERSCRIPT>)","","2");
 		//生成原始记录
 		generateDataPart("cft",doc);
 		//生成不确定度表格
@@ -276,7 +274,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model                                                                                                  这里记得要改
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanTpMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(dBm)","");
+		doc = generateOneItem(wlanResultMap,doc,"(dBm)","","2");
 		//生成原始记录
 		generateDataPart("tp",doc);
 		//生成不确定度表格
@@ -294,7 +292,7 @@ public class ReportGenerator {
 		//wlanResultMap的key是model                                                                                                  这里记得要改
 		TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap = reportData.getWlanMpMap();
 		//生成核心报告表格
-		doc = generateOneItem(wlanResultMap,doc,"(dBm/MHz)","");
+		doc = generateOneItem(wlanResultMap,doc,"(dBm/MHz)","","2");
 		//生成原始记录
 		generateDataPart("mp",doc);
 		//生成不确定度表格
@@ -402,7 +400,7 @@ public class ReportGenerator {
 	}
 
 	private XWPFDocument generateOneItem(TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>>> wlanResultMap,
-			XWPFDocument doc,String unit,String pLabel) {
+			XWPFDocument doc,String unit,String pLabel,String accuracy) {
 		Set<String> modelSet = wlanResultMap.keySet();
 		tableCount = 0;
 		int size = modelSet.size();
@@ -411,7 +409,7 @@ public class ReportGenerator {
 			i++;
 			//wlanEirpMap.get(model)结果是rateMap
 			//开始生成一个制式的部分
-			doc = generateOneModel(model,wlanResultMap.get(model),doc,unit,pLabel);
+			doc = generateOneModel(model,wlanResultMap.get(model),doc,unit,pLabel,accuracy);
 			if(model.indexOf("(")==-1) {
 				//一个abg制式完成后留一个分页符，两个ac、n完成后留一个分页
 				XWPFRun run = WordUtils.createRun(doc);
@@ -431,7 +429,7 @@ public class ReportGenerator {
 	
 	//开始生成一个制式的部分
 	private XWPFDocument generateOneModel(String model,TreeMap<String,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>>> rateMap,
-			XWPFDocument doc,String unit,String pLabel) {
+			XWPFDocument doc,String unit,String pLabel,String accuracy) {
 		XWPFRun run = WordUtils.createRun(doc);
 		run.setText(getModelText(model));
 		run.setFontSize(12);
@@ -440,7 +438,7 @@ public class ReportGenerator {
 		for(String rate:rateSet){
 			//rateMap.get(rate)结果是countMap，需要组成一个tableData
 			//开始生成一个速率的部分
-			doc = generateOneRate(rate,rateMap.get(rate),doc,unit,pLabel);
+			doc = generateOneRate(rate,rateMap.get(rate),doc,unit,pLabel,accuracy);
 		}
 		return doc;
 	}
@@ -449,7 +447,7 @@ public class ReportGenerator {
 	
 	//开始生成一个速率的部分
 	private XWPFDocument generateOneRate(String rate,TreeMap<String,TreeMap<String,TreeMap<String,FormatResult>>> antMap,
-			XWPFDocument doc,String unit,String pLabel) {
+			XWPFDocument doc,String unit,String pLabel,String accuracy) {
 //	    TreeMap<Integer, TreeMap<String, TreeMap<String, FormatResult>>> rateMap = rateMap.get(model);
 		XWPFRun run;
 		if(!"cft".equals(rate)) {
@@ -457,7 +455,7 @@ public class ReportGenerator {
 			run.setFontSize(12);
 			run.setText("数据速率："+rate);
 		}
-		TableData tableData = DataHandler.toWlanTableData(antMap,unit,pLabel);
+		TableData tableData = DataHandler.toWlanTableData(antMap,unit,pLabel,accuracy);
 		XWPFTable table = WordUtils.createTable(doc, tableData);
 		tableCount++;
 		// 表格宽度
