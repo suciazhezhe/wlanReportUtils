@@ -1,27 +1,5 @@
 package com.gzteleader.wlanReportUtils.Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.ResourceUtils;
-
 import com.deepoove.poi.util.TableTools;
 import com.gzteleader.wlanReportUtils.bean.FormatResult;
 import com.gzteleader.wlanReportUtils.bean.MergeCell;
@@ -29,6 +7,15 @@ import com.gzteleader.wlanReportUtils.bean.ReportData;
 import com.gzteleader.wlanReportUtils.bean.TableData;
 import com.gzteleader.wlanReportUtils.entity.WlanSe;
 import com.gzteleader.wlanReportUtils.properties.WlanReportProperties;
+import org.apache.poi.xwpf.usermodel.*;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHeight;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTrPr;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
+
+import java.io.*;
+import java.math.BigInteger;
+import java.util.*;
 
 public class ReportGenerator {
 	//临时文件夹地址
@@ -166,8 +153,9 @@ public class ReportGenerator {
 		doc = generateOneItem(wlanResultMap,doc,"(dBm)","P<SUBSCRIPT>eirp</SUBSCRIPT>","2");
 		//生成原始记录
 		generateDataPart("eirp",doc);
+
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.80dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-eirp.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -185,7 +173,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("maxpow",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.78dB"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.78dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-maxpow.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -203,7 +191,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("oob",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.78dB"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.78dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-oob.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -222,7 +210,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("freq",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.16MHz"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.16MHz"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-freq.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -240,7 +228,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("obw",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.16MHz"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.16MHz"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-obw.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -259,7 +247,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("cft",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.06×10<SUPERSCRIPT>-6</SUPERSCRIPT>"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.06×10<SUPERSCRIPT>-6</SUPERSCRIPT>"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-cft.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -278,7 +266,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("tp",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.80dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-tp.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -296,7 +284,7 @@ public class ReportGenerator {
 		//生成原始记录
 		generateDataPart("mp",doc);
 		//生成不确定度表格
-		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子k=2)","0.8dB"	);
+		doc = generateUncertainty(doc,"测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)","0.80dB"	);
 		String path = WordUtils.saveFile(doc, temRootPath+reportName+"-mp.docx");
 		reportTemDocxList.add(path);
 		FileUtils.closeStream(is);
@@ -457,6 +445,15 @@ public class ReportGenerator {
 		}
 		TableData tableData = DataHandler.toWlanTableData(antMap,unit,pLabel,accuracy);
 		XWPFTable table = WordUtils.createTable(doc, tableData);
+//		CTTblPr tblPr = table.getCTTbl().getTblPr();
+//		tblPr.getTblW().setType(STTblWidth.DXA);
+//		设置行高
+		List<XWPFTableRow> rows = table.getRows();
+		for (XWPFTableRow row : rows) {
+			CTTrPr trPr = row.getCtRow().addNewTrPr();
+			CTHeight th = trPr.addNewTrHeight();
+			th.setVal(BigInteger.valueOf(520));
+		}
 		tableCount++;
 		// 表格宽度
 	    TableTools.widthTable(table, 15.5f, table.getRows().size());
@@ -604,7 +601,7 @@ public class ReportGenerator {
 		TableData tableData = new TableData();
 		List<List<String>> data = new ArrayList<List<String>>();
 		List<String> row1 = new ArrayList<String>();
-		row1.add("测量不确定度\r\n(扩展因子k=2)");
+		row1.add("测量不确定度\r\n(扩展因子<ITALIC>k</ITALIC>=2)");
 		row1.add("30MHz~100MHz");
 		row1.add("1.83dB");
 		data.add(row1);

@@ -1,19 +1,13 @@
 package com.gzteleader.wlanReportUtils.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.gzteleader.wlanReportUtils.bean.FormatResult;
 import com.gzteleader.wlanReportUtils.bean.MergeCell;
 import com.gzteleader.wlanReportUtils.bean.TableData;
 import com.gzteleader.wlanReportUtils.entity.WlanSe;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DataHandler {
 	
@@ -163,7 +157,20 @@ public class DataHandler {
 					if(null!=freqMap) {
 						for(String freq:maxfreqSet) {
 							FormatResult formatResult = freqMap.get(freq);
-							if(null!=formatResult) {
+							//fL里面有value但是取不出来
+							boolean doDetData = false;
+							if(null==formatResult){
+								for (FormatResult value : freqMap.values()) {
+									if (freq.equals(value.getFreq())){
+										formatResult = value;
+										doDetData = true;
+										break;
+									}
+								}
+							}else{
+								doDetData = true;
+							}
+							if(doDetData) {
 								String result = String.format("%."+accuracy+"f", formatResult.getResult());
 								antRow.add(result);
 								String conclusion = conclusionRow.get(column);

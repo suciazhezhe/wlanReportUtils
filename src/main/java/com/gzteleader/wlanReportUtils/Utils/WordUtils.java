@@ -1,31 +1,12 @@
 package com.gzteleader.wlanReportUtils.Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.deepoove.poi.util.TableTools;
+import com.gzteleader.wlanReportUtils.bean.MergeCell;
+import com.gzteleader.wlanReportUtils.bean.TableData;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.VerticalAlign;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFHeader;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.*;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell.XWPFVertAlign;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -37,9 +18,14 @@ import org.docx4j.wml.CTAltChunk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
-import com.deepoove.poi.util.TableTools;
-import com.gzteleader.wlanReportUtils.bean.MergeCell;
-import com.gzteleader.wlanReportUtils.bean.TableData;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author lsx
@@ -258,9 +244,10 @@ public class WordUtils {
 				p.setAlignment(ParagraphAlignment.CENTER);
 				XWPFRun run = p.createRun();
 				run.setText(cellData, 0);
-				if(cellData.indexOf("\r\n")!=-1) run = setTextWithEnter(p,run,cell);
-				if(cellData.indexOf("</SUPERSCRIPT>")!=-1) cell = setTextWithSup(cell);
-				if(cellData.indexOf("</SUBSCRIPT>")!=-1) cell = setTextWithSub(cell);
+				if(cellData.indexOf("\r\n")!=-1){ run = setTextWithEnter(p,run,cell);}
+				if(cellData.indexOf("</SUPERSCRIPT>")!=-1){ cell = setTextWithSup(cell);}
+				if(cellData.indexOf("</SUBSCRIPT>")!=-1){ cell = setTextWithSub(cell);}
+				if(cellData.indexOf("</ITALIC>")!=-1){ cell = setTextWithItalic(cell);}
 			}
 		}
 		List<MergeCell> mergeCells = tableData.getMergeCells();
@@ -282,7 +269,7 @@ public class WordUtils {
 		}
 		return table;
 	}
-	
+
 	/**
 	 * 
 	 * 
@@ -303,13 +290,45 @@ public class WordUtils {
 		}
 		return run;
 	}
-	
+
+	private static XWPFTableCell setTextWithItalic(XWPFTableCell cell) {
+		List<XWPFParagraph> ps = cell.getParagraphs();
+		for(XWPFParagraph p:ps) {
+			String s=p.getText();
+			if(s.indexOf("</ITALIC>")!=-1) {
+				List<XWPFRun> runs = p.getRuns();
+				for(int i=0;i<runs.size();i++) {
+					XWPFRun run = runs.get(i);
+					String runStr= run.text();
+					if(runStr.indexOf("</ITALIC>")!=-1) {
+						p.removeRun(i);
+						run = p.insertNewRun(i);
+						String[] tempArray = runStr.split("</ITALIC>");
+						for(String tempSrt:tempArray) {
+							if(tempSrt.indexOf("<ITALIC>")!=-1) {
+								String[] tempArray2 = tempSrt.split("<ITALIC>");
+								run.setText(tempArray2[0]);
+								run = p.insertNewRun(i+1);
+								run.setText(tempArray2[1]);
+								runs = p.getRuns();
+								i++;
+								run.setItalic(true);
+								run = p.insertNewRun(i+1);
+								runs = p.getRuns();
+								i++;
+							}else {
+								run.setText(tempSrt);
+							}
+						}
+					}
+				}
+			}
+		}
+		return cell;
+	}
 	/**
 	 * 
 	 * <SUBSCRIPT>下标</SUBSCRIPT>
-	 * @param p
-	 * @param run
-	 * @param s
 	 * @return
 	 */
 	public static XWPFTableCell setTextWithSub(XWPFTableCell cell) {
@@ -351,9 +370,6 @@ public class WordUtils {
 	/**
 	 * 
 	 * <SUPERSCRIPT>上标</SUPERSCRIPT>
-	 * @param p
-	 * @param run
-	 * @param s
 	 * @return
 	 */
 	public static XWPFTableCell setTextWithSup(XWPFTableCell cell) {
